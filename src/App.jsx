@@ -1,25 +1,40 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
-import "./App.css";
+import { useEffect, useState } from 'react';
+import { invoke } from '@tauri-apps/api/core';
 
 function App() {
   const [name, setName] = useState("");
-  const [greeting, setGreeting] = useState("");
+  const [price, setPrice] = useState("");
+  const [products, setProducts] = useState([]);
 
-  async function sayHello() {
-    const msg = await invoke("greet", { name });
-    setGreeting(msg);
-  }
+  const addProduct = async () => {
+    await invoke("add_product", { name, price: parseFloat(price) });
+    loadProducts();
+  };
+
+  const loadProducts = async () => {
+    const result = await invoke("get_products");
+    setProducts(result);
+  };
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
   return (
     <div>
-      <h1>Tauri + React</h1>
-      <input onChange={(e) => setName(e.target.value)} />
-      <button onClick={sayHello}>Greet</button>
-      <p>{greeting}</p>
+      <h1>Inventory</h1>
+      <input value={name} onChange={e => setName(e.target.value)} placeholder="Name" />
+      <input value={price} onChange={e => setPrice(e.target.value)} placeholder="Price" type="number" />
+      <button onClick={addProduct}>Add Product</button>
+
+      <ul>
+        {products.map(p => (
+          <li key={p.id}>{p.name} - ${p.price}</li>
+        ))}
+      </ul>
     </div>
   );
 }
 
 export default App;
+
