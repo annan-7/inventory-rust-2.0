@@ -1,40 +1,48 @@
-import { useEffect, useState } from 'react';
-import { invoke } from '@tauri-apps/api/core';
+import { useEffect, useState } from "react";
+import { invoke } from "@tauri-apps/api/core";
+import ProductList from "./components/ProductList";
+import Cart from "./components/Cart";
+import CheckoutButton from "./components/CheckoutButton";
 
-function App() {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+export default function App() {
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
 
-  const addProduct = async () => {
-    await invoke("add_product", { name, price: parseFloat(price) });
-    loadProducts();
-  };
-
-  const loadProducts = async () => {
+  const fetchProducts = async () => {
     const result = await invoke("get_products");
     setProducts(result);
   };
 
+  const addToCart = (product) => {
+    const existing = cart.find((p) => p.product_name === product.name);
+    if (existing) {
+      setCart(cart.map((item) =>
+        item.product_name === product.name
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      ));
+    } else {
+      setCart([...cart, {
+        product_name: product.name,
+        quantity: 1,
+        price_per_item: product.price
+      }]);
+    }
+  };
+
+  const clearCart = () => setCart([]);
+
   useEffect(() => {
-    loadProducts();
+    fetchProducts();
   }, []);
 
   return (
     <div>
-      <h1>Inventory</h1>
-      <input value={name} onChange={e => setName(e.target.value)} placeholder="Name" />
-      <input value={price} onChange={e => setPrice(e.target.value)} placeholder="Price" type="number" />
-      <button onClick={addProduct}>Add Product</button>
-
-      <ul>
-        {products.map(p => (
-          <li key={p.id}>{p.name} - ${p.price}</li>
-        ))}
-      </ul>
+      <h1>🧾 Billing Interface</h1>
+      <ProductList products={products} addToCart={addToCart} />
+      <Cart cart={cart} setCart={setCart} />
+      <CheckoutButton cart={cart} clearCart={clearCart} />
     </div>
   );
 }
-
-export default App;
 
