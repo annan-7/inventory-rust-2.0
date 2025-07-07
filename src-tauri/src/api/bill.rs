@@ -1,5 +1,6 @@
 use rusqlite::Connection;
 use crate::models::bill::{Bill, BillItem};
+use tauri::command;
 
 #[tauri::command]
 pub fn create_bill(items: Vec<BillItem>) -> Result<i64, String> {
