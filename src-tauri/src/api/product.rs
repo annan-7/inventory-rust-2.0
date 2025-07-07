@@ -1,5 +1,6 @@
 use rusqlite::Connection;
 use crate::models::product::Product;
+use tauri::command;
 
 #[tauri::command]
 pub fn add_product(name: String, price: f64) -> Result<(), String> {
