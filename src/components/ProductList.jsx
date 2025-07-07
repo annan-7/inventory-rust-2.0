@@ -1,15 +1,41 @@
-export default function ProductList({ products, addToCart }) {
+// src/components/ProductList.jsx
+import { useEffect, useState } from 'react';
+import { invoke } from '@tauri-apps/api/tauri';
+
+export default function ProductList() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getAllProducts = async () => {
+    try {
+      setLoading(true);
+      const result = await invoke('get_products');
+      setProducts(result);
+    } catch (err) {
+      console.error('Failed to fetch products:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
   return (
     <div>
-      <h2>Products</h2>
-      <ul>
-        {products.map(p => (
-          <li key={p.id}>
-            {p.name} - ${p.price.toFixed(2)}
-            <button onClick={() => addToCart(p)}>Add</button>
-          </li>
-        ))}
-      </ul>
+      <h2>Product List</h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ul>
+          {products.map((p) => (
+            <li key={p.id}>
+              {p.name} — {p.price}$
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
