@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { invoke } from "@tauri-apps/api/core";
+//import { invoke } from "@tauri-apps/api/core";
+import { invoke } from "@tauri-apps/api/tauri";
+
 import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
 import CheckoutButton from "./components/CheckoutButton";
@@ -39,9 +41,13 @@ export default function App() {
   return (
     <div>
       <h1>🧾 Billing Interface</h1>
-      <ProductList products={products} addToCart={addToCart} />
+      
       <Cart cart={cart} setCart={setCart} />
       <CheckoutButton cart={cart} clearCart={clearCart} />
+      <div>
+      <h1>Inventory System</h1>
+      <ProductList />
+    </div>
     </div>
   );
 }
