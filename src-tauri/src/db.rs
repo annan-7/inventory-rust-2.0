@@ -5,6 +5,11 @@ pub fn init_db() -> Result<()> {
 
     conn.execute_batch(
         "
+        CREATE TABLE IF NOT EXISTS products (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            price REAL NOT NULL
+        );
         CREATE TABLE IF NOT EXISTS bills (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             date TEXT NOT NULL,
