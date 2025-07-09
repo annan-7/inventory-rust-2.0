@@ -1,6 +1,6 @@
 // src/components/ProductList.jsx
 import { useEffect, useState } from 'react';
-import { invoke } from '@tauri-apps/api/tauri';
+import { invoke } from '@tauri-apps/api/core';
 
 export default function ProductList() {
   const [products, setProducts] = useState([]);
