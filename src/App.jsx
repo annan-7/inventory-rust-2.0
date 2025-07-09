@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-//import { invoke } from "@tauri-apps/api/core";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 
 import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
 import CheckoutButton from "./components/CheckoutButton";
+import AddProduct from "./components/AddProduct";
 
 export default function App() {
   const [products, setProducts] = useState([]);
@@ -13,6 +13,10 @@ export default function App() {
   const fetchProducts = async () => {
     const result = await invoke("get_products");
     setProducts(result);
+  };
+
+  const handleProductAdded = () => {
+    fetchProducts(); // Refresh the product list when a new product is added
   };
 
   const addToCart = (product) => {
@@ -45,9 +49,10 @@ export default function App() {
       <Cart cart={cart} setCart={setCart} />
       <CheckoutButton cart={cart} clearCart={clearCart} />
       <div>
-      <h1>Inventory System</h1>
-      <ProductList />
-    </div>
+        <h1>Inventory System</h1>
+        <AddProduct onProductAdded={handleProductAdded} />
+        <ProductList />
+      </div>
     </div>
   );
 }
