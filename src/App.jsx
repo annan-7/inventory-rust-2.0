@@ -5,6 +5,7 @@ import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
 import CheckoutButton from "./components/CheckoutButton";
 import AddProduct from "./components/AddProduct";
+import DeleteProduct from "./components/DeleteProduct";
 
 export default function App() {
   const [products, setProducts] = useState([]);
@@ -17,6 +18,10 @@ export default function App() {
 
   const handleProductAdded = () => {
     fetchProducts(); // Refresh the product list when a new product is added
+  };
+
+  const handleProductDeleted = () => {
+    fetchProducts(); // Refresh the product list when a product is deleted
   };
 
   const addToCart = (product) => {
@@ -51,6 +56,7 @@ export default function App() {
       <div>
         <h1>Inventory System</h1>
         <AddProduct onProductAdded={handleProductAdded} />
+        <DeleteProduct onProductDeleted={handleProductDeleted} />
         <ProductList />
       </div>
     </div>
