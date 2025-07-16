@@ -10,6 +10,7 @@ pub fn init_db() -> Result<()> {
             name TEXT NOT NULL,
             price REAL NOT NULL
         );
+        CREATE INDEX IF NOT EXISTS idx_products_name ON products(name);
         CREATE TABLE IF NOT EXISTS bills (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             date TEXT NOT NULL,
