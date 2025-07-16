@@ -19,6 +19,7 @@ fn main() {
             api::product::get_products,
             api::product::update_product,
             api::product::delete_product,
+            api::product::get_product_by_id_and_name,
             // Billing APIs
             api::bill::create_bill,
             api::bill::get_bills,
