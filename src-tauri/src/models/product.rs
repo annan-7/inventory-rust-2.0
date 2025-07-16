@@ -43,4 +43,18 @@ impl Product {
         conn.execute("DELETE FROM products WHERE id = ?1", params![id])?;
         Ok(())
     }
+
+    pub fn get_by_id_and_name(conn: &Connection, id: i32, name: &str) -> Result<Option<Product>> {
+        let mut stmt = conn.prepare("SELECT id, name, price FROM products WHERE id = ?1 AND name = ?2 LIMIT 1")?;
+        let mut rows = stmt.query(params![id, name])?;
+        if let Some(row) = rows.next()? {
+            Ok(Some(Product {
+                id: row.get(0)?,
+                name: row.get(1)?,
+                price: row.get(2)?,
+            }))
+        } else {
+            Ok(None)
+        }
+    }
 }
