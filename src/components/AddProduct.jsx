@@ -7,18 +7,24 @@ export default function AddProduct({ onProductAdded }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [quantity, setQuantity] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!name.trim() || !price.trim()) {
+    if (!name.trim() || !price.trim() || !quantity.trim()) {
       setError('Please fill in all fields');
       return;
     }
 
     const priceValue = parseFloat(price);
+    const quantityValue = parseInt(quantity, 10);
     if (isNaN(priceValue) || priceValue <= 0) {
       setError('Please enter a valid price');
+      return;
+    }
+    if (isNaN(quantityValue) || quantityValue < 0) {
+      setError('Please enter a valid quantity');
       return;
     }
 
@@ -27,11 +33,12 @@ export default function AddProduct({ onProductAdded }) {
       setError('');
       setSuccess('');
 
-      await invoke('add_product', { name: name.trim(), price: priceValue });
+      await invoke('add_product', { name: name.trim(), price: priceValue, quantity: quantityValue });
       
       setSuccess('Product added successfully!');
       setName('');
       setPrice('');
+      setQuantity('');
       
       // Notify parent component to refresh the product list
       if (onProductAdded) {
@@ -77,6 +84,20 @@ export default function AddProduct({ onProductAdded }) {
           />
         </div>
 
+        <div className="form-group">
+          <label htmlFor="productQuantity">Quantity:</label>
+          <input
+            type="number"
+            id="productQuantity"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            placeholder="0"
+            min="0"
+            disabled={loading}
+            required
+          />
+        </div>
+
         {error && <div className="error-message">{error}</div>}
         {success && <div className="success-message">{success}</div>}
 
@@ -91,11 +112,11 @@ export default function AddProduct({ onProductAdded }) {
 
       <style jsx>{`
         .add-product-container {
-          background: #f8f9fa;
+          background:rgb(66, 66, 66);
           padding: 20px;
           border-radius: 8px;
           margin-bottom: 20px;
-          border: 1px solid #e9ecef;
+          border: 1px solidrgb(2, 2, 2);
         }
 
         .add-product-form {
