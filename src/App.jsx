@@ -10,6 +10,8 @@ import DeleteProduct from "./components/DeleteProduct";
 import GetProductsTest from "./components/GetProductsTest";
 import DeletedProductsList from "./components/DeletedProductsList";
 
+import Bill from "./components/Bill";
+
 
 function InventorySection({ handleProductAdded, handleProductDeleted }) {
   return (
@@ -30,28 +32,26 @@ function InventorySection({ handleProductAdded, handleProductDeleted }) {
   );
 }
 
-function BillingSection() {
-  const [invoiceNumber, setInvoiceNumber] = useState(1);
+function BillingSection({ handleProductDeleted }) {
   const [dueDate, setDueDate] = useState("");
-  const [billTo, setBillTo] = useState({ name: "", email: "", address: "" });
   const [billFrom, setBillFrom] = useState({ name: "", email: "", address: "" });
   const [itemId, setItemId] = useState("");
-  const [itemName, setItemName] = useState("");
   const [itemQty, setItemQty] = useState(1);
   const [item, setItem] = useState(null);
   const [itemList, setItemList] = useState([]);
   const [discount, setDiscount] = useState(0);
-  const [currency, setCurrency] = useState("USD (United States Dollar)");
+  const [shopName, setShopName] = useState("Example Shop");
+
   const TAX_RATE = 19;
 
   // Get current date
   const currentDate = new Date().toLocaleDateString();
 
-  // Fetch product by id and name
+  // Fetch product by id only
   const fetchProduct = async () => {
-    if (!itemId || !itemName) return;
+    if (!itemId) return;
     try {
-      const result = await invoke("get_product_by_id_and_name", { id: Number(itemId), name: itemName });
+      const result = await invoke("get_product_by_id", { id: Number(itemId) });
       if (result) {
         setItem({ ...result, quantity: itemQty });
       } else {
@@ -64,18 +64,25 @@ function BillingSection() {
     }
   };
 
-  const handleAddItem = () => {
+  const handleAddItem = async () => {
     if (item && item.quantity > 0) {
+      // Add to bill
       setItemList([...itemList, { ...item, quantity: itemQty }]);
+      
+      // Delete the product from inventory (sell it)
+      try {
+        await invoke("delete_product", { id: item.id });
+        if (handleProductDeleted) {
+          handleProductDeleted();
+        }
+      } catch (e) {
+        alert("Error selling product: " + e);
+      }
+      
       setItem(null);
       setItemId("");
-      setItemName("");
       setItemQty(1);
     }
-  };
-
-  const handleRemoveItem = (idx) => {
-    setItemList(itemList.filter((_, i) => i !== idx));
   };
 
   const subtotal = itemList.reduce((sum, i) => sum + i.price * i.quantity, 0);
@@ -85,99 +92,70 @@ function BillingSection() {
 
   return (
     <div style={{ display: 'flex', gap: 24 }}>
-      <div style={{ background: '#222', color: '#fff', borderRadius: 8, padding: 24, flex: 2, maxWidth: 700 }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
-          <div>
-            <div>Current Date: {currentDate}</div>
-            <div style={{ marginTop: 8 }}>
-              Due Date: <input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} style={{ background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4 }} />
+      <div style={{ flex: 1 }}>
+        <div style={{ background: '#222', color: '#fff', borderRadius: 8, padding: 24, marginBottom: 24 }}>
+          <h2 style={{ marginTop: 0 }}>Add Products to Bill</h2>
+          
+          {/* Shop Name */}
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ display: 'block', marginBottom: 4 }}>Shop Name:</label>
+            <input
+              type="text"
+              value={shopName}
+              onChange={(e) => setShopName(e.target.value)}
+              style={{ width: '100%', background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 8 }}
+            />
+          </div>
+
+          {/* Product Selection */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: 4 }}>Product ID:</label>
+              <input
+                placeholder="Enter Product ID"
+                value={itemId}
+                onChange={(e) => setItemId(e.target.value)}
+                style={{ width: '100%', background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 8 }}
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: 4 }}>Quantity:</label>
+              <input
+                type="number"
+                min="1"
+                value={itemQty}
+                onChange={(e) => setItemQty(Number(e.target.value))}
+                style={{ width: '100%', background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 8 }}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'end', gap: 8 }}>
+              <button
+                onClick={fetchProduct}
+                style={{ background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 16px' }}
+              >
+                Get Product
+              </button>
+              <button
+                onClick={handleAddItem}
+                style={{ background: '#1976d2', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 16px' }}
+              >
+                Sell Item
+              </button>
             </div>
           </div>
-          <div>
-            Invoice Number: <input type="number" min={1} value={invoiceNumber} onChange={e => setInvoiceNumber(e.target.value)} style={{ background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4, width: 60 }} />
-          </div>
-        </div>
-        <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
-          <div style={{ flex: 1 }}>
-            <div>Bill to:</div>
-            <input placeholder="Name" value={billTo.name} onChange={e => setBillTo({ ...billTo, name: e.target.value })} style={{ width: '100%', marginBottom: 4, background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4 }} />
-            <input placeholder="Email" value={billTo.email} onChange={e => setBillTo({ ...billTo, email: e.target.value })} style={{ width: '100%', marginBottom: 4, background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4 }} />
-            <input placeholder="Address" value={billTo.address} onChange={e => setBillTo({ ...billTo, address: e.target.value })} style={{ width: '100%', background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4 }} />
-          </div>
-          <div style={{ flex: 1 }}>
-            <div>Bill from:</div>
-            <input placeholder="Name" value={billFrom.name} onChange={e => setBillFrom({ ...billFrom, name: e.target.value })} style={{ width: '100%', marginBottom: 4, background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4 }} />
-            <input placeholder="Email" value={billFrom.email} onChange={e => setBillFrom({ ...billFrom, email: e.target.value })} style={{ width: '100%', marginBottom: 4, background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4 }} />
-            <input placeholder="Address" value={billFrom.address} onChange={e => setBillFrom({ ...billFrom, address: e.target.value })} style={{ width: '100%', background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4 }} />
-          </div>
-        </div>
-        <div style={{ marginBottom: 16 }}>
-          <div style={{ display: 'flex', gap: 8, fontWeight: 'bold', borderBottom: '1px solid #444', paddingBottom: 4 }}>
-            <div style={{ flex: 2 }}>ITEM</div>
-            <div style={{ flex: 1 }}>QTY</div>
-            <div style={{ flex: 1 }}>PRICE/RATE</div>
-            <div style={{ width: 40 }}>ACTION</div>
-          </div>
-          <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-            <input placeholder="ID" value={itemId} onChange={e => setItemId(e.target.value)} style={{ flex: 1, background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4 }} />
-            <input placeholder="Name" value={itemName} onChange={e => setItemName(e.target.value)} style={{ flex: 2, background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4 }} />
-            <input type="number" min={1} value={itemQty} onChange={e => setItemQty(Number(e.target.value))} style={{ flex: 1, background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4 }} />
-            <button onClick={fetchProduct} style={{ background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '4px 8px' }}>Get</button>
-            <input value={item && item.price ? item.price : ''} readOnly placeholder="Price" style={{ flex: 1, background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: 4 }} />
-            <button onClick={handleAddItem} style={{ background: '#1976d2', color: '#fff', border: 'none', borderRadius: 4, padding: '4px 12px', marginLeft: 4 }}>Add Item</button>
-          </div>
-        </div>
-        <div style={{ marginBottom: 16 }}>
-          {itemList.length > 0 && (
-            <table style={{ width: '100%', background: '#222', color: '#fff', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ borderBottom: '1px solid #444' }}>
-                  <th style={{ textAlign: 'left', padding: 8 }}>Name</th>
-                  <th style={{ textAlign: 'left', padding: 8 }}>Qty</th>
-                  <th style={{ textAlign: 'left', padding: 8 }}>Price</th>
-                  <th style={{ textAlign: 'left', padding: 8 }}>Total</th>
-                  <th style={{ textAlign: 'left', padding: 8 }}>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {itemList.map((it, idx) => (
-                  <tr key={idx} style={{ borderBottom: '1px solid #333' }}>
-                    <td style={{ padding: 8 }}>{it.name}</td>
-                    <td style={{ padding: 8 }}>{it.quantity}</td>
-                    <td style={{ padding: 8 }}>${it.price.toFixed(2)}</td>
-                    <td style={{ padding: 8 }}>${(it.price * it.quantity).toFixed(2)}</td>
-                    <td style={{ padding: 8 }}><button onClick={() => handleRemoveItem(idx)} style={{ background: '#d32f2f', color: '#fff', border: 'none', borderRadius: 4, padding: '2px 8px' }}>🗑️</button></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+
+          {/* Product Info */}
+          {item && (
+            <div style={{ padding: 12, background: '#333', borderRadius: 4, marginBottom: 16 }}>
+              <div><strong>Product:</strong> {item.name}</div>
+              <div><strong>Price:</strong> ${item.price.toFixed(2)}</div>
+              <div><strong>Available Quantity:</strong> {item.quantity}</div>
+            </div>
           )}
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
-          <div>Subtotal: ${subtotal.toFixed(2)}</div>
-          <div>Discount: ({discount}%){discountAmount === 0 ? '' : `(-$${discountAmount.toFixed(2)})`}</div>
-          <div>Tax: ({TAX_RATE}%){tax === 0 ? '' : `($${tax.toFixed(2)})`}</div>
-          <div style={{ fontWeight: 'bold', fontSize: 18, marginTop: 8 }}>Total: ${total.toFixed(2)}</div>
-        </div>
-      </div>
-      <div style={{ flex: 1, maxWidth: 320, marginTop: 24 }}>
-        <button style={{ width: '100%', background: '#1976d2', color: '#fff', border: 'none', borderRadius: 6, padding: '12px 0', fontWeight: 'bold', fontSize: 16, marginBottom: 24 }}>Review Invoice</button>
-        <div style={{ marginBottom: 16 }}>
-          <div>Currency:</div>
-          <select value={currency} onChange={e => setCurrency(e.target.value)} style={{ width: '100%', background: '#222', color: '#fff', border: '1px solid #444', borderRadius: 4, padding: 6 }}>
-            <option>USD (United States Dollar)</option>
-            <option>EUR (Euro)</option>
-            <option>GBP (British Pound)</option>
-          </select>
-        </div>
-        <div style={{ marginBottom: 16 }}>
-          <div>Tax rate:</div>
-          <input type="number" value={TAX_RATE} readOnly style={{ width: '100%', background: '#222', color: '#fff', border: '1px solid #444', borderRadius: 4, padding: 6 }} />
-        </div>
-        <div style={{ marginBottom: 16 }}>
-          <div>Discount rate:</div>
-          <input type="number" value={discount} onChange={e => setDiscount(Number(e.target.value))} style={{ width: '100%', background: '#222', color: '#fff', border: '1px solid #444', borderRadius: 4, padding: 6 }} />
-        </div>
+
+        {/* Bill Display */}
+        <Bill itemList={itemList} setItemList={setItemList} shopName={shopName} />
       </div>
     </div>
   );
@@ -231,7 +209,7 @@ export default function App() {
       </nav>
       <Routes>
         <Route path="/inventory" element={<InventorySection handleProductAdded={handleProductAdded} handleProductDeleted={handleProductDeleted} />} />
-        <Route path="/billing" element={<BillingSection />} />
+        <Route path="/billing" element={<BillingSection handleProductDeleted={handleProductDeleted} />} />
         <Route path="*" element={<Navigate to="/inventory" replace />} />
       </Routes>
     </Router>
