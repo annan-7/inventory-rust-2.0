@@ -84,6 +84,21 @@ impl Product {
             Ok(None)
         }
     }
+
+    pub fn get_by_id(conn: &Connection, id: i32) -> Result<Option<Product>> {
+        let mut stmt = conn.prepare("SELECT id, name, price, quantity FROM products WHERE id = ?1 LIMIT 1")?;
+        let mut rows = stmt.query(params![id])?;
+        if let Some(row) = rows.next()? {
+            Ok(Some(Product {
+                id: row.get(0)?,
+                name: row.get(1)?,
+                price: row.get(2)?,
+                quantity: row.get(3)?,
+            }))
+        } else {
+            Ok(None)
+        }
+    }
 }
 
 impl DeletedProduct {
