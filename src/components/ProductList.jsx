@@ -7,6 +7,7 @@ export default function ProductList({ onAddToCart }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 10;
 
