@@ -52,12 +52,11 @@ export default function AddProduct({ onProductAdded }) {
   };
 
   return (
-    <div className="add-product-container">
-      <h2>Add New Product</h2>
-      
-      <form onSubmit={handleSubmit} className="add-product-form">
-        <div className="form-group">
-          <label htmlFor="productName">Product Name:</label>
+    <div className="bg-black-600 text-white p-6 rounded-lg border border-gray-700 shadow">
+      <h2 className="text-xl font-bold mb-4">Add New Product</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1">
+          <label htmlFor="productName" className="font-semibold">Product Name:</label>
           <input
             type="text"
             id="productName"
@@ -66,11 +65,11 @@ export default function AddProduct({ onProductAdded }) {
             placeholder="Enter product name"
             disabled={loading}
             required
+            className="bg-black-600 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
-        <div className="form-group">
-          <label htmlFor="productPrice">Price ($):</label>
+        <div className="flex flex-col gap-1">
+          <label htmlFor="productPrice" className="font-semibold">Price ($):</label>
           <input
             type="number"
             id="productPrice"
@@ -81,11 +80,11 @@ export default function AddProduct({ onProductAdded }) {
             min="0"
             disabled={loading}
             required
+            className="bg-black-600 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
-        <div className="form-group">
-          <label htmlFor="productQuantity">Quantity:</label>
+        <div className="flex flex-col gap-1">
+          <label htmlFor="productQuantity" className="font-semibold">Quantity:</label>
           <input
             type="number"
             id="productQuantity"
@@ -95,99 +94,19 @@ export default function AddProduct({ onProductAdded }) {
             min="0"
             disabled={loading}
             required
+            className="bg-black-600 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
-        {error && <div className="error-message">{error}</div>}
-        {success && <div className="success-message">{success}</div>}
-
+        {error && <div className="bg-red-800 text-red-100 border border-red-400 rounded px-3 py-2">{error}</div>}
+        {success && <div className="bg-green-800 text-green-100 border border-green-400 rounded px-3 py-2">{success}</div>}
         <button 
           type="submit" 
           disabled={loading}
-          className="add-button"
+          className="bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded px-4 py-2 transition-colors disabled:bg-gray-600"
         >
           {loading ? 'Adding...' : 'Add Product'}
         </button>
       </form>
-
-      <style jsx>{`
-        .add-product-container {
-          background:rgb(66, 66, 66);
-          padding: 20px;
-          border-radius: 8px;
-          margin-bottom: 20px;
-          border: 1px solidrgb(2, 2, 2);
-        }
-
-        .add-product-form {
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
-        }
-
-        .form-group {
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-        }
-
-        .form-group label {
-          font-weight: 600;
-          color: #495057;
-        }
-
-        .form-group input {
-          padding: 10px;
-          border: 1px solid #ced4da;
-          border-radius: 4px;
-          font-size: 14px;
-        }
-
-        .form-group input:focus {
-          outline: none;
-          border-color: #007bff;
-          box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-        }
-
-        .add-button {
-          background: #007bff;
-          color: white;
-          border: none;
-          padding: 12px 20px;
-          border-radius: 4px;
-          font-size: 16px;
-          font-weight: 600;
-          cursor: pointer;
-          transition: background-color 0.2s;
-        }
-
-        .add-button:hover:not(:disabled) {
-          background: #0056b3;
-        }
-
-        .add-button:disabled {
-          background: #6c757d;
-          cursor: not-allowed;
-        }
-
-        .error-message {
-          color: #dc3545;
-          background: #f8d7da;
-          border: 1px solid #f5c6cb;
-          padding: 10px;
-          border-radius: 4px;
-          font-size: 14px;
-        }
-
-        .success-message {
-          color: #155724;
-          background: #d4edda;
-          border: 1px solid #c3e6cb;
-          padding: 10px;
-          border-radius: 4px;
-          font-size: 14px;
-        }
-      `}</style>
     </div>
   );
 } 
