@@ -7,7 +7,6 @@ export default function ProductList({ onAddToCart }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 10;
 
@@ -58,11 +57,8 @@ export default function ProductList({ onAddToCart }) {
   const paginated = products.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
-    <div className="max-w-2xl mx-auto mt-8 p-4 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4 text-gray-800 flex items-center gap-2">
-        
-        Product List
-      </h2>
+    <div className="w-full">
+      <h2 className="text-xl font-bold mb-4 text-gray-100 flex items-center gap-2">Product List</h2>
       {editingProduct && (
         <UpdateProduct
           product={editingProduct}
@@ -72,35 +68,34 @@ export default function ProductList({ onAddToCart }) {
       )}
       {loading ? (
         <div className="flex justify-center items-center py-8">
-          
-          <span className="ml-2 text-gray-500 text-sm">Loading...</span>
+          <span className="ml-2 text-gray-400 text-sm">Loading...</span>
         </div>
       ) : (
         <>
         <ul className="space-y-2">
           {paginated.map((p) => (
-            <li key={p.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-md shadow-sm hover:shadow transition-shadow border border-gray-200">
-              <span className="text-base text-gray-700">
-                <span className="font-semibold text-blue-600">ID: {p.id}</span> — <span className="font-medium">{p.name}</span> — <span className="text-green-600 font-semibold">${p.price}</span>
+            <li key={p.id} className="flex justify-between items-center p-4 bg-gray-800 rounded-md shadow-sm hover:shadow transition-shadow border border-gray-700">
+              <span className="text-base text-gray-100">
+                <span className="font-semibold text-blue-400">ID: {p.id}</span> — <span className="font-medium">{p.name}</span> — <span className="text-green-400 font-semibold">${p.price}</span> — <span className="text-purple-300 font-semibold">Qty: {p.quantity}</span>
               </span>
               <div className="flex gap-1">
                 <button
                   onClick={() => handleEditProduct(p)}
-                  className="flex items-center gap-1 px-2 py-1 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-semibold rounded transition-colors shadow-sm border border-yellow-300 text-xs"
+                  className="flex items-center gap-1 px-2 py-1 bg-yellow-600 hover:bg-yellow-500 text-gray-900 font-semibold rounded transition-colors shadow-sm border border-yellow-400 text-xs"
                   title="Edit"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDeleteProduct(p.id)}
-                  className="px-2 py-1 bg-red-500 hover:bg-red-400 text-white font-semibold rounded transition-colors shadow-sm border border-red-400 text-xs"
+                  className="px-2 py-1 bg-red-700 hover:bg-red-600 text-white font-semibold rounded transition-colors shadow-sm border border-red-400 text-xs"
                 >
                   Delete
                 </button>
                 {onAddToCart && (
                   <button
                     onClick={() => onAddToCart(p)}
-                    className="px-2 py-1 bg-blue-500 hover:bg-blue-400 text-white font-semibold rounded transition-colors shadow-sm border border-blue-400 text-xs"
+                    className="px-2 py-1 bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded transition-colors shadow-sm border border-blue-400 text-xs"
                   >
                     Add to Cart
                   </button>
@@ -110,10 +105,10 @@ export default function ProductList({ onAddToCart }) {
           ))}
         </ul>
         {totalPages > 1 && (
-          <div style={{ marginTop: 12, display: 'flex', gap: 8, justifyContent: 'center' }}>
-            <button onClick={() => setPage(page - 1)} disabled={page === 1}>Prev</button>
-            <span>Page {page} of {totalPages}</span>
-            <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>Next</button>
+          <div className="mt-4 flex gap-4 justify-center items-center">
+            <button onClick={() => setPage(page - 1)} disabled={page === 1} className="px-3 py-1 rounded bg-gray-700 text-white disabled:opacity-50">Prev</button>
+            <span className="text-gray-300">Page {page} of {totalPages}</span>
+            <button onClick={() => setPage(page + 1)} disabled={page === totalPages} className="px-3 py-1 rounded bg-gray-700 text-white disabled:opacity-50">Next</button>
           </div>
         )}
         </>
