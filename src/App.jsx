@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 
 import ProductList from "./components/ProductList";
 import Cart from "./components/Cart";
@@ -12,21 +12,101 @@ import DeletedProductsList from "./components/DeletedProductsList";
 
 import Bill from "./components/Bill";
 
+// Navigation Component
+function Navigation() {
+  const location = useLocation();
+  
+  return (
+    <nav className="bg-black-700 border-b border-gray-700 shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
+                <span className="text-xl font-bold text-white">Inventory Pro</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation Links - Centered */}
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-8">
+              <Link
+                to="/inventory"
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  location.pathname === '/inventory'
+                    ? 'bg-blue-700 text-white'
+                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                }`}
+              >
+                Inventory
+              </Link>
+              <Link
+                to="/billing"
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  location.pathname === '/billing'
+                    ? 'bg-blue-700 text-white'
+                    : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                }`}
+              >
+                Billing
+              </Link>
+            </div>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button className="text-gray-300 hover:text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}
 
 function InventorySection({ handleProductAdded, handleProductDeleted }) {
   return (
-    <div style={{ flex: 1, minWidth: 350 }}>
-      <h1>Inventory System</h1>
-      
-      <AddProduct onProductAdded={handleProductAdded} />
-      <DeleteProduct onProductDeleted={handleProductDeleted} />
-      <ProductList />
-      <div className="mt-8 border-t pt-8">
-        <GetProductsTest />
+    <div className="flex flex-col gap-8 w-full max-w-5xl mx-auto p-4 bg-black-600">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+        <h1 className="text-3xl font-bold text-white tracking-tight">Inventory System</h1>
+        
       </div>
-      <div className="mt-8 border-t pt-8">
-        <h1>List of Sold Products</h1>
-        <DeletedProductsList />
+
+      {/* Actions Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-black-600 rounded-xl shadow p-6 border border-gray-100">
+          <AddProduct onProductAdded={handleProductAdded} />
+        </div>
+        <div className="bg-black-600 rounded-xl shadow p-6 border border-gray-100">
+          <DeleteProduct onProductDeleted={handleProductDeleted} />
+        </div>
+      </div>
+
+      {/* Product List */}
+      <div className="bg-black-600 rounded-xl shadow p-6 border border-gray-100">
+        <ProductList />
+      </div>
+
+      {/* Test & Sold Products */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <div className="bg-black-600 rounded-xl shadow p-6 border border-gray-100">
+          <GetProductsTest />
+        </div>
+        <div className="bg-black-600 rounded-xl shadow p-6 border border-gray-100">
+          <h2 className="text-xl font-bold mb-4 text-white">List of Sold Products</h2>
+          <DeletedProductsList />
+        </div>
       </div>
     </div>
   );
@@ -41,6 +121,8 @@ function BillingSection({ handleProductDeleted }) {
   const [itemList, setItemList] = useState([]);
   const [discount, setDiscount] = useState(0);
   const [shopName, setShopName] = useState("Example Shop");
+  const [isBillActive, setIsBillActive] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const TAX_RATE = 19;
 
@@ -50,17 +132,23 @@ function BillingSection({ handleProductDeleted }) {
   // Fetch product by id only
   const fetchProduct = async () => {
     if (!itemId) return;
+    setLoading(true);
     try {
       const result = await invoke("get_product_by_id", { id: Number(itemId) });
       if (result) {
         setItem({ ...result, quantity: itemQty });
+        setIsBillActive(true); // Activate bill when product is found
       } else {
         setItem(null);
+        setIsBillActive(false);
         alert("Product not found");
       }
     } catch (e) {
       setItem(null);
+      setIsBillActive(false);
       alert("Error fetching product");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,6 +156,7 @@ function BillingSection({ handleProductDeleted }) {
     if (item && item.quantity > 0) {
       // Add to bill
       setItemList([...itemList, { ...item, quantity: itemQty }]);
+      setIsBillActive(true); // Keep bill active when items are added
       
       // Delete the product from inventory (sell it)
       try {
@@ -131,9 +220,17 @@ function BillingSection({ handleProductDeleted }) {
             <div style={{ display: 'flex', alignItems: 'end', gap: 8 }}>
               <button
                 onClick={fetchProduct}
-                style={{ background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 16px' }}
+                disabled={loading}
+                style={{ 
+                  background: loading ? '#666' : '#444', 
+                  color: '#fff', 
+                  border: 'none', 
+                  borderRadius: 4, 
+                  padding: '8px 16px',
+                  cursor: loading ? 'not-allowed' : 'pointer'
+                }}
               >
-                Get Product
+                {loading ? 'Loading...' : 'Get Product'}
               </button>
               <button
                 onClick={handleAddItem}
@@ -146,16 +243,31 @@ function BillingSection({ handleProductDeleted }) {
 
           {/* Product Info */}
           {item && (
-            <div style={{ padding: 12, background: '#333', borderRadius: 4, marginBottom: 16 }}>
-              <div><strong>Product:</strong> {item.name}</div>
-              <div><strong>Price:</strong> ${item.price.toFixed(2)}</div>
-              <div><strong>Available Quantity:</strong> {item.quantity}</div>
+            <div style={{ 
+              padding: 12, 
+              background: '#28a745', 
+              borderRadius: 4, 
+              marginBottom: 16,
+              border: '2px solid #20c997',
+              animation: 'pulse 2s infinite'
+            }}>
+              <div style={{ color: 'white', fontWeight: 'bold' }}>✅ Product Found!</div>
+              <div style={{ color: 'white' }}><strong>Product:</strong> {item.name}</div>
+              <div style={{ color: 'white' }}><strong>Price:</strong> ${item.price.toFixed(2)}</div>
+              <div style={{ color: 'white' }}><strong>Available Quantity:</strong> {item.quantity}</div>
             </div>
           )}
         </div>
 
         {/* Bill Display */}
-        <Bill itemList={itemList} setItemList={setItemList} shopName={shopName} />
+        <div className={`transition-all duration-300 ${isBillActive ? 'opacity-100 scale-100' : 'opacity-50 scale-95'}`}>
+          <Bill 
+            itemList={itemList} 
+            setItemList={setItemList} 
+            shopName={shopName}
+            isActive={isBillActive}
+          />
+        </div>
       </div>
     </div>
   );
@@ -203,15 +315,16 @@ export default function App() {
 
   return (
     <Router>
-      <nav style={{ display: 'flex', gap: '2rem', marginBottom: 24 }}>
-        <Link to="/inventory">Inventory</Link>
-        <Link to="/billing">Billing</Link>
-      </nav>
-      <Routes>
-        <Route path="/inventory" element={<InventorySection handleProductAdded={handleProductAdded} handleProductDeleted={handleProductDeleted} />} />
-        <Route path="/billing" element={<BillingSection handleProductDeleted={handleProductDeleted} />} />
-        <Route path="*" element={<Navigate to="/inventory" replace />} />
-      </Routes>
+      <div className="min-h-screen bg-black-700">
+        <Navigation />
+        <main className="py-8">
+          <Routes>
+            <Route path="/inventory" element={<InventorySection handleProductAdded={handleProductAdded} handleProductDeleted={handleProductDeleted} />} />
+            <Route path="/billing" element={<BillingSection handleProductDeleted={handleProductDeleted} />} />
+            <Route path="*" element={<Navigate to="/inventory" replace />} />
+          </Routes>
+        </main>
+      </div>
     </Router>
   );
 }
