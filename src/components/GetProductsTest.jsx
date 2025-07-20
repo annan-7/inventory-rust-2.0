@@ -13,45 +13,20 @@ export default function GetProductsTest() {
       setLoading(true);
       setError(null);
       setTestResults([]);
-      
-      // Add test start log
       setTestResults(prev => [...prev, { type: 'info', message: 'Starting get_products test...', timestamp: new Date().toISOString() }]);
-      
       const result = await invoke('get_products');
-      
-      // Log successful result
-      setTestResults(prev => [...prev, { 
-        type: 'success', 
-        message: `Successfully retrieved ${result.length} products`, 
-        timestamp: new Date().toISOString() 
-      }]);
-      
-      // Log detailed product information
+      setTestResults(prev => [...prev, { type: 'success', message: `Successfully retrieved ${result.length} products`, timestamp: new Date().toISOString() }]);
       if (result.length > 0) {
-        setTestResults(prev => [...prev, { 
-          type: 'info', 
-          message: `Products found: ${result.map(p => `ID:${p.id} Name:${p.name} Price:$${p.price}`).join(', ')}`, 
-          timestamp: new Date().toISOString() 
-        }]);
+        setTestResults(prev => [...prev, { type: 'info', message: `Products found: ${result.map(p => `ID:${p.id} Name:${p.name} Price:$${p.price} Qty:${p.quantity}`).join(', ')}`, timestamp: new Date().toISOString() }]);
       } else {
-        setTestResults(prev => [...prev, { 
-          type: 'warning', 
-          message: 'No products found in database', 
-          timestamp: new Date().toISOString() 
-        }]);
+        setTestResults(prev => [...prev, { type: 'warning', message: 'No products found in database', timestamp: new Date().toISOString() }]);
       }
-      
       setProducts(result);
-      
     } catch (err) {
       const errorMessage = `Failed to fetch products: ${err}`;
       console.error(errorMessage, err);
       setError(errorMessage);
-      setTestResults(prev => [...prev, { 
-        type: 'error', 
-        message: errorMessage, 
-        timestamp: new Date().toISOString() 
-      }]);
+      setTestResults(prev => [...prev, { type: 'error', message: errorMessage, timestamp: new Date().toISOString() }]);
     } finally {
       setLoading(false);
     }
@@ -65,47 +40,33 @@ export default function GetProductsTest() {
 
   const getResultIcon = (type) => {
     switch (type) {
-      case 'success':
-        return '✅';
-      case 'error':
-        return '❌';
-      case 'warning':
-        return '⚠️';
-      case 'info':
-        return 'ℹ️';
-      default:
-        return '📝';
+      case 'success': return '✅';
+      case 'error': return '❌';
+      case 'warning': return '⚠️';
+      case 'info': return 'ℹ️';
+      default: return '📝';
     }
   };
 
   const getResultColor = (type) => {
     switch (type) {
-      case 'success':
-        return 'text-green-600 bg-green-50 border-green-200';
-      case 'error':
-        return 'text-red-600 bg-red-50 border-red-200';
-      case 'warning':
-        return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      case 'info':
-        return 'text-blue-600 bg-blue-50 border-blue-200';
-      default:
-        return 'text-gray-600 bg-gray-50 border-gray-200';
+      case 'success': return 'text-green-300 bg-green-900 border-green-700';
+      case 'error': return 'text-red-300 bg-red-900 border-red-700';
+      case 'warning': return 'text-yellow-300 bg-yellow-900 border-yellow-700';
+      case 'info': return 'text-blue-300 bg-blue-900 border-blue-700';
+      default: return 'text-gray-300 bg-gray-900 border-gray-700';
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800 flex items-center gap-2">
-        
-        Get Products Test Component
-      </h2>
-      
+    <div className="max-w-4xl mx-auto p-6 bg-black-800 text-white rounded-lg shadow border border-gray-700">
+      <h2 className="text-2xl font-bold mb-6 text-gray-100 flex items-center gap-2">Get Products Test Component</h2>
       <div className="mb-6">
         <div className="flex gap-4 mb-4">
           <button
             onClick={testGetProducts}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-semibold rounded-lg transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-700 hover:bg-blue-600 disabled:bg-gray-600 text-white font-semibold rounded-lg transition-colors shadow-sm"
           >
             {loading ? (
               <>
@@ -124,32 +85,28 @@ export default function GetProductsTest() {
               </>
             )}
           </button>
-          
           <button
             onClick={clearTestResults}
-            className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg transition-colors shadow-sm"
+            className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg transition-colors shadow-sm"
           >
             Clear Results
           </button>
         </div>
-        
         {error && (
-          <div className="p-4 bg-red-50 border border-red-200 rounded-lg mb-4">
+          <div className="p-4 bg-red-900 border border-red-700 rounded-lg mb-4">
             <div className="flex items-center gap-2">
-              
-              <span className="font-semibold text-red-800">Error:</span>
-              <span className="text-red-700">{error}</span>
+              <span className="font-semibold text-red-200">Error:</span>
+              <span className="text-red-100">{error}</span>
             </div>
           </div>
         )}
       </div>
-
       {/* Test Results */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-3 text-gray-700">Test Results</h3>
+        <h3 className="text-lg font-semibold mb-3 text-gray-200">Test Results</h3>
         <div className="space-y-2 max-h-60 overflow-y-auto">
           {testResults.length === 0 ? (
-            <p className="text-gray-400 italic text-center py-4">No test results yet. Click "Test get_products" to start.</p>
+            <p className="text-gray-500 italic text-center py-4">No test results yet. Click "Test get_products" to start.</p>
           ) : (
             testResults.map((result, index) => (
               <div key={index} className={`p-3 rounded-lg border ${getResultColor(result.type)}`}>
@@ -157,7 +114,7 @@ export default function GetProductsTest() {
                   <span className="text-sm">{getResultIcon(result.type)}</span>
                   <div className="flex-1">
                     <p className="text-sm font-medium">{result.message}</p>
-                    <p className="text-xs text-gray-500 mt-1">{result.timestamp}</p>
+                    <p className="text-xs text-gray-400 mt-1">{result.timestamp}</p>
                   </div>
                 </div>
               </div>
@@ -165,25 +122,24 @@ export default function GetProductsTest() {
           )}
         </div>
       </div>
-
       {/* Products Display */}
       <div>
-        <h3 className="text-lg font-semibold mb-3 text-gray-700">
-          Retrieved Products ({products.length})
-        </h3>
+        <h3 className="text-lg font-semibold mb-3 text-gray-200">Retrieved Products ({products.length})</h3>
         {products.length > 0 ? (
           <div className="grid gap-3">
             {products.map((product) => (
-              <div key={product.id} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div key={product.id} className="p-4 bg-gray-800 rounded-lg border border-gray-700">
                 <div className="flex justify-between items-center">
                   <div>
-                    <span className="font-semibold text-blue-600">ID: {product.id}</span>
-                    <span className="mx-2 text-gray-400">|</span>
-                    <span className="font-medium text-gray-800">{product.name}</span>
-                    <span className="mx-2 text-gray-400">|</span>
-                    <span className="font-semibold text-green-600">${product.price}</span>
+                    <span className="font-semibold text-blue-400">ID: {product.id}</span>
+                    <span className="mx-2 text-gray-500">|</span>
+                    <span className="font-medium text-gray-100">{product.name}</span>
+                    <span className="mx-2 text-gray-500">|</span>
+                    <span className="font-semibold text-green-400">${product.price}</span>
+                    <span className="mx-2 text-gray-500">|</span>
+                    <span className="font-semibold text-purple-300">Qty: {product.quantity}</span>
                   </div>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-gray-400">
                     Raw data: {JSON.stringify(product)}
                   </div>
                 </div>
@@ -191,7 +147,7 @@ export default function GetProductsTest() {
             ))}
           </div>
         ) : (
-          <p className="text-gray-400 italic text-center py-4">No products to display</p>
+          <p className="text-gray-500 italic text-center py-4">No products to display</p>
         )}
       </div>
     </div>
