@@ -68,6 +68,7 @@ export default function DeleteProduct({ onProductDeleted }) {
           </label>
           <label className="flex items-center gap-2">
             <input
+            
               type="radio"
               name="deleteMode"
               value="quantity"
