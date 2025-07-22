@@ -15,7 +15,7 @@ export default function ProductList({ onAddToCart }) {
       setLoading(true);
       const result = await invoke('get_products');
       setProducts(result);
-      setPage(1); // Reset to first page on fetch
+      setPage(1); // Reset to first page on the fetch
     } catch (err) {
       console.error('Failed to fetch products:', err);
     } finally {
