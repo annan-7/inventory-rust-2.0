@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function Bill({ itemList, setItemList, shopName = "Example Shop" }) {
+export default function Bill({ itemList, setItemList, shopName = "Example Shop", isActive = false }) {
   const [editingItem, setEditingItem] = useState(null);
 
   const handleEditItem = (index) => {
@@ -34,94 +34,63 @@ export default function Bill({ itemList, setItemList, shopName = "Example Shop" 
   const total = subtotal + tax;
 
   return (
-    <div style={{ 
-      background: '#fff', 
-      border: '1px solid #ddd', 
-      borderRadius: 8, 
-      padding: 24, 
-      maxWidth: 800, 
-      margin: '0 auto',
-      fontFamily: 'Arial, sans-serif'
-    }}>
+    <div className={`bg-gray-900 text-white p-8 rounded-xl border ${isActive ? 'border-blue-500 shadow-2xl' : 'border-gray-700 shadow'} max-w-3xl mx-auto font-sans transition-all duration-300 print:bg-white print:text-black print:border print:border-gray-300 print:shadow-none`}>
+      {/* Active Banner */}
+      {isActive && (
+        <div className="bg-blue-700 text-white px-4 py-2 rounded-t-xl font-semibold mb-4 text-center print:hidden">
+          🎯 Bill Active - Ready for Items
+        </div>
+      )}
       {/* Print Button */}
-      <div style={{ textAlign: 'right', marginBottom: 16 }}>
+      <div className="flex justify-end mb-4 print:hidden">
         <button
           onClick={handlePrint}
-          style={{
-            background: '#28a745',
-            color: 'white',
-            border: 'none',
-            padding: '8px 16px',
-            borderRadius: 4,
-            cursor: 'pointer',
-            fontSize: 14
-          }}
+          className="bg-green-700 hover:bg-green-600 text-white font-semibold rounded px-4 py-2 transition-colors"
         >
           🖨️ Print Bill
         </button>
       </div>
-
       {/* Header */}
-      <div style={{ 
-        textAlign: 'center', 
-        borderBottom: '2px solid #333', 
-        paddingBottom: 16, 
-        marginBottom: 24 
-      }}>
-        <h1 style={{ margin: 0, color: '#333', fontSize: 28 }}>{shopName}</h1>
-        <p style={{ margin: '8px 0 0 0', color: '#666' }}>Sales Invoice</p>
-        <p style={{ margin: '4px 0 0 0', color: '#666' }}>Date: {new Date().toLocaleDateString()}</p>
+      <div className="text-center border-b-2 border-gray-700 pb-4 mb-6">
+        <h1 className="text-3xl font-bold text-white mb-1">{shopName}</h1>
+        <p className="text-gray-300 mb-0">Sales Invoice</p>
+        <p className="text-gray-400 text-sm mt-1">Date: {new Date().toLocaleDateString()}</p>
       </div>
-
       {/* Items Table */}
-      <div style={{ marginBottom: 24 }}>
-        <table style={{ 
-          width: '100%', 
-          borderCollapse: 'collapse',
-          border: '1px solid #ddd'
-        }}>
+      <div className="mb-8 overflow-x-auto">
+        <table className="w-full bg-gray-800 rounded-lg border border-gray-700">
           <thead>
-            <tr style={{ background: '#f8f9fa' }}>
-              <th style={{ padding: 12, textAlign: 'left', border: '1px solid #ddd' }}>Product</th>
-              <th style={{ padding: 12, textAlign: 'center', border: '1px solid #ddd' }}>Quantity</th>
-              <th style={{ padding: 12, textAlign: 'center', border: '1px solid #ddd' }}>Price</th>
-              <th style={{ padding: 12, textAlign: 'center', border: '1px solid #ddd' }}>Total</th>
-              <th style={{ padding: 12, textAlign: 'center', border: '1px solid #ddd' }}>Actions</th>
+            <tr className="bg-gray-900">
+              <th className="px-4 py-2 text-left text-gray-200">Product</th>
+              <th className="px-4 py-2 text-center text-gray-200">Quantity</th>
+              <th className="px-4 py-2 text-center text-gray-200">Price</th>
+              <th className="px-4 py-2 text-center text-gray-200">Total</th>
+              <th className="px-4 py-2 text-center text-gray-200 print:hidden">Actions</th>
             </tr>
           </thead>
           <tbody>
             {itemList.length === 0 ? (
               <tr>
-                <td colSpan="5" style={{ padding: 24, textAlign: 'center', color: '#666' }}>
-                  No items in bill
-                </td>
+                <td colSpan="5" className="py-8 text-center text-gray-400">No items in bill</td>
               </tr>
             ) : (
               itemList.map((item, index) => (
-                <tr key={index} style={{ borderBottom: '1px solid #eee' }}>
-                  <td style={{ padding: 12, border: '1px solid #ddd' }}>
-                    <strong>{item.name}</strong>
-                  </td>
-                  <td style={{ padding: 12, textAlign: 'center', border: '1px solid #ddd' }}>
+                <tr key={index} className="border-b border-gray-700">
+                  <td className="px-4 py-2 font-semibold">{item.name}</td>
+                  <td className="px-4 py-2 text-center">
                     {editingItem === index ? (
                       <input
                         type="number"
                         min="1"
                         value={item.quantity}
                         onChange={(e) => handleUpdateItem(index, 'quantity', e.target.value)}
-                        style={{
-                          width: 60,
-                          padding: 4,
-                          border: '1px solid #ddd',
-                          borderRadius: 4,
-                          textAlign: 'center'
-                        }}
+                        className="w-16 px-2 py-1 rounded bg-gray-900 text-white border border-gray-600 text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     ) : (
                       item.quantity
                     )}
                   </td>
-                  <td style={{ padding: 12, textAlign: 'center', border: '1px solid #ddd' }}>
+                  <td className="px-4 py-2 text-center">
                     {editingItem === index ? (
                       <input
                         type="number"
@@ -129,63 +98,32 @@ export default function Bill({ itemList, setItemList, shopName = "Example Shop" 
                         step="0.01"
                         value={item.price}
                         onChange={(e) => handleUpdateItem(index, 'price', e.target.value)}
-                        style={{
-                          width: 80,
-                          padding: 4,
-                          border: '1px solid #ddd',
-                          borderRadius: 4,
-                          textAlign: 'center'
-                        }}
+                        className="w-24 px-2 py-1 rounded bg-gray-900 text-white border border-gray-600 text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     ) : (
                       `$${item.price.toFixed(2)}`
                     )}
                   </td>
-                  <td style={{ padding: 12, textAlign: 'center', border: '1px solid #ddd' }}>
-                    <strong>${(item.price * item.quantity).toFixed(2)}</strong>
-                  </td>
-                  <td style={{ padding: 12, textAlign: 'center', border: '1px solid #ddd' }}>
+                  <td className="px-4 py-2 text-center font-bold">${(item.price * item.quantity).toFixed(2)}</td>
+                  <td className="px-4 py-2 text-center print:hidden">
                     {editingItem === index ? (
                       <button
                         onClick={() => handleSaveItem(index)}
-                        style={{
-                          background: '#28a745',
-                          color: 'white',
-                          border: 'none',
-                          padding: '4px 8px',
-                          borderRadius: 4,
-                          cursor: 'pointer',
-                          marginRight: 4
-                        }}
+                        className="bg-green-700 hover:bg-green-600 text-white font-semibold rounded px-3 py-1 mr-2"
                       >
                         Save
                       </button>
                     ) : (
                       <button
                         onClick={() => handleEditItem(index)}
-                        style={{
-                          background: '#007bff',
-                          color: 'white',
-                          border: 'none',
-                          padding: '4px 8px',
-                          borderRadius: 4,
-                          cursor: 'pointer',
-                          marginRight: 4
-                        }}
+                        className="bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded px-3 py-1 mr-2"
                       >
                         Edit
                       </button>
                     )}
                     <button
                       onClick={() => handleRemoveItem(index)}
-                      style={{
-                        background: '#dc3545',
-                        color: 'white',
-                        border: 'none',
-                        padding: '4px 8px',
-                        borderRadius: 4,
-                        cursor: 'pointer'
-                      }}
+                      className="bg-red-700 hover:bg-red-600 text-white font-semibold rounded px-3 py-1"
                     >
                       Remove
                     </button>
@@ -196,52 +134,36 @@ export default function Bill({ itemList, setItemList, shopName = "Example Shop" 
           </tbody>
         </table>
       </div>
-
       {/* Summary */}
-      <div style={{ 
-        borderTop: '2px solid #333', 
-        paddingTop: 16,
-        textAlign: 'right'
-      }}>
-        <div style={{ marginBottom: 8 }}>
-          <span style={{ fontWeight: 'bold', marginRight: 16 }}>Subtotal:</span>
-          <span>${subtotal.toFixed(2)}</span>
-        </div>
-        <div style={{ marginBottom: 8 }}>
-          <span style={{ fontWeight: 'bold', marginRight: 16 }}>Tax (19%):</span>
-          <span>${tax.toFixed(2)}</span>
-        </div>
-        <div style={{ 
-          fontSize: 18, 
-          fontWeight: 'bold', 
-          borderTop: '1px solid #ddd', 
-          paddingTop: 8 
-        }}>
-          <span style={{ marginRight: 16 }}>Total:</span>
-          <span>${total.toFixed(2)}</span>
-        </div>
+      <div className="border-t-2 border-gray-700 pt-6 flex flex-col items-end gap-2">
+        <div className="text-white">Subtotal: <span className="font-bold">${subtotal.toFixed(2)}</span></div>
+        <div className="text-white">Tax (19%): <span className="font-bold">${tax.toFixed(2)}</span></div>
+        <div className="text-white text-lg font-bold">Total: ${total.toFixed(2)}</div>
       </div>
-
       {/* Print Styles */}
       <style jsx>{`
         @media print {
           body * {
             visibility: hidden;
           }
-          .bill-content, .bill-content * {
-            visibility: visible;
+          .print\:bg-white, .print\:bg-white * {
+            background: #fff !important;
+            color: #000 !important;
           }
-          .bill-content {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
+          .print\:text-black, .print\:text-black * {
+            color: #000 !important;
           }
-          button {
+          .print\:border, .print\:border * {
+            border-color: #ccc !important;
+          }
+          .print\:shadow-none, .print\:shadow-none * {
+            box-shadow: none !important;
+          }
+          .print\:hidden, .print\:hidden * {
             display: none !important;
           }
         }
       `}</style>
     </div>
   );
-} 
+}
