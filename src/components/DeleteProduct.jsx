@@ -13,12 +13,12 @@ export default function DeleteProduct({ onProductDeleted }) {
     e.preventDefault();
     
     if (!productId.trim()) {
-      setMessage('Please enter a product ID');
+      setMessage('Por favor, ingrese un ID de producto');
       return;
     }
 
     if (deleteMode === 'quantity' && (!quantity.trim() || parseInt(quantity) <= 0)) {
-      setMessage('Please enter a valid quantity to delete');
+      setMessage('Por favor, ingrese una cantidad válida para eliminar');
       return;
     }
 
@@ -28,10 +28,10 @@ export default function DeleteProduct({ onProductDeleted }) {
       
       if (deleteMode === 'full') {
         await invoke('delete_product', { id: parseInt(productId) });
-        setMessage('Product deleted successfully!');
+        setMessage('¡Producto eliminado exitosamente!');
       } else {
         await invoke('delete_product_quantity', { id: parseInt(productId), quantity: parseInt(quantity) });
-        setMessage(`Quantity ${quantity} deleted successfully!`);
+        setMessage(`Cantidad ${quantity} eliminada exitosamente!`);
       }
       
       setProductId('');
@@ -42,18 +42,18 @@ export default function DeleteProduct({ onProductDeleted }) {
         onProductDeleted();
       }
     } catch (error) {
-      setMessage(`Error deleting product: ${error}`);
+      setMessage(`Error al eliminar el producto: ${error}`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-black-800 text-white p-6 rounded-lg border border-gray-700 shadow">
-      <h3 className="text-xl font-bold mb-4">Delete Product</h3>
+    <div className="bg-gray-900 text-white p-6 rounded-lg border border-gray-700 shadow">
+      <h3 className="text-xl font-bold mb-4">Eliminar Producto</h3>
       {/* Delete Mode Selection */}
       <div className="mb-4">
-        <label className="block mb-2 font-semibold">Delete Mode:</label>
+        <label className="block mb-2 font-semibold">Modo de Eliminación:</label>
         <div className="flex gap-6">
           <label className="flex items-center gap-2">
             <input
@@ -64,11 +64,10 @@ export default function DeleteProduct({ onProductDeleted }) {
               onChange={(e) => setDeleteMode(e.target.value)}
               className="accent-blue-600"
             />
-            Delete Entire Product
+            Eliminar Producto Completo
           </label>
           <label className="flex items-center gap-2">
             <input
-            
               type="radio"
               name="deleteMode"
               value="quantity"
@@ -76,19 +75,19 @@ export default function DeleteProduct({ onProductDeleted }) {
               onChange={(e) => setDeleteMode(e.target.value)}
               className="accent-blue-600"
             />
-            Delete Specific Quantity
+            Eliminar Cantidad Específica
           </label>
         </div>
       </div>
       <form onSubmit={handleDelete} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
-          <label htmlFor="productId" className="font-semibold">Product ID:</label>
+          <label htmlFor="productId" className="font-semibold">ID del Producto:</label>
           <input
             type="number"
             id="productId"
             value={productId}
             onChange={(e) => setProductId(e.target.value)}
-            placeholder="Enter product ID"
+            placeholder="Ingrese el ID del producto"
             className="bg-gray-800 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
             disabled={loading}
             required
@@ -96,13 +95,13 @@ export default function DeleteProduct({ onProductDeleted }) {
         </div>
         {deleteMode === 'quantity' && (
           <div className="flex flex-col gap-1">
-            <label htmlFor="quantity" className="font-semibold">Quantity to Delete:</label>
+            <label htmlFor="quantity" className="font-semibold">Cantidad a Eliminar:</label>
             <input
               type="number"
               id="quantity"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              placeholder="Enter quantity to delete"
+              placeholder="Ingrese la cantidad a eliminar"
               min="1"
               className="bg-gray-800 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-48"
               disabled={loading}
@@ -115,7 +114,7 @@ export default function DeleteProduct({ onProductDeleted }) {
           disabled={loading}
           className="bg-red-700 hover:bg-red-600 text-white font-semibold rounded px-4 py-2 transition-colors disabled:bg-gray-600 w-48"
         >
-          {loading ? 'Deleting...' : (deleteMode === 'full' ? 'Delete Product' : 'Delete Quantity')}
+          {loading ? 'Eliminando...' : (deleteMode === 'full' ? 'Eliminar Producto' : 'Eliminar Cantidad')}
         </button>
       </form>
       {message && (
