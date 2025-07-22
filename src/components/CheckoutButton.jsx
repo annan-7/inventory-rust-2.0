@@ -12,7 +12,7 @@ export default function CheckoutButton({ cart, clearCart }) {
       alert("Bill saved!");
       clearCart();
     } catch (err) {
-      alert("Error: " + err);
+      alert("There is Error: " + err);
     }
   };
 
