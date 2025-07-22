@@ -147,6 +147,7 @@ export default function GetProductsTest() {
             ))}
           </div>
         ) : (
+          
           <p className="text-gray-500 italic text-center py-4">No products to display</p>
         )}
       </div>
