@@ -166,4 +166,4 @@ export default function Bill({ itemList, setItemList, shopName = "Example Shop",
       `}</style>
     </div>
   );
-}
+} 
