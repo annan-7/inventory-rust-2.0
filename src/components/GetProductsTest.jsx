@@ -13,17 +13,17 @@ export default function GetProductsTest() {
       setLoading(true);
       setError(null);
       setTestResults([]);
-      setTestResults(prev => [...prev, { type: 'info', message: 'Starting get_products test...', timestamp: new Date().toISOString() }]);
+      setTestResults(prev => [...prev, { type: 'info', message: 'Iniciando prueba de get_products...', timestamp: new Date().toISOString() }]);
       const result = await invoke('get_products');
-      setTestResults(prev => [...prev, { type: 'success', message: `Successfully retrieved ${result.length} products`, timestamp: new Date().toISOString() }]);
+      setTestResults(prev => [...prev, { type: 'success', message: `Se recuperaron ${result.length} productos exitosamente`, timestamp: new Date().toISOString() }]);
       if (result.length > 0) {
-        setTestResults(prev => [...prev, { type: 'info', message: `Products found: ${result.map(p => `ID:${p.id} Name:${p.name} Price:$${p.price} Qty:${p.quantity}`).join(', ')}`, timestamp: new Date().toISOString() }]);
+        setTestResults(prev => [...prev, { type: 'info', message: `Productos encontrados: ${result.map(p => `ID:${p.id} Nombre:${p.name} Precio:$${p.price} Cant:${p.quantity}`).join(', ')}`, timestamp: new Date().toISOString() }]);
       } else {
-        setTestResults(prev => [...prev, { type: 'warning', message: 'No products found in database', timestamp: new Date().toISOString() }]);
+        setTestResults(prev => [...prev, { type: 'warning', message: 'No se encontraron productos en la base de datos', timestamp: new Date().toISOString() }]);
       }
       setProducts(result);
     } catch (err) {
-      const errorMessage = `Failed to fetch products: ${err}`;
+      const errorMessage = `Error al obtener productos: ${err}`;
       console.error(errorMessage, err);
       setError(errorMessage);
       setTestResults(prev => [...prev, { type: 'error', message: errorMessage, timestamp: new Date().toISOString() }]);
@@ -59,8 +59,8 @@ export default function GetProductsTest() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-black-800 text-white rounded-lg shadow border border-gray-700">
-      <h2 className="text-2xl font-bold mb-6 text-gray-100 flex items-center gap-2">Get Products Test Component</h2>
+    <div className="max-w-4xl mx-auto p-6 bg-gray-900 text-white rounded-lg shadow border border-gray-700">
+      <h2 className="text-2xl font-bold mb-6 text-gray-100 flex items-center gap-2">Componente de Prueba de Obtener Productos</h2>
       <div className="mb-6">
         <div className="flex gap-4 mb-4">
           <button
@@ -74,14 +74,14 @@ export default function GetProductsTest() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                 </svg>
-                Testing...
+                Probando...
               </>
             ) : (
               <>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Test get_products
+                Probar get_products
               </>
             )}
           </button>
@@ -89,7 +89,7 @@ export default function GetProductsTest() {
             onClick={clearTestResults}
             className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg transition-colors shadow-sm"
           >
-            Clear Results
+            Limpiar Resultados
           </button>
         </div>
         {error && (
@@ -103,10 +103,10 @@ export default function GetProductsTest() {
       </div>
       {/* Test Results */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-3 text-gray-200">Test Results</h3>
+        <h3 className="text-lg font-semibold mb-3 text-gray-200">Resultados de la Prueba</h3>
         <div className="space-y-2 max-h-60 overflow-y-auto">
           {testResults.length === 0 ? (
-            <p className="text-gray-500 italic text-center py-4">No test results yet. Click "Test get_products" to start.</p>
+            <p className="text-gray-500 italic text-center py-4">Aún no hay resultados de prueba. Haz clic en "Probar get_products" para comenzar.</p>
           ) : (
             testResults.map((result, index) => (
               <div key={index} className={`p-3 rounded-lg border ${getResultColor(result.type)}`}>
@@ -124,7 +124,7 @@ export default function GetProductsTest() {
       </div>
       {/* Products Display */}
       <div>
-        <h3 className="text-lg font-semibold mb-3 text-gray-200">Retrieved Products ({products.length})</h3>
+        <h3 className="text-lg font-semibold mb-3 text-gray-200">Productos Recuperados ({products.length})</h3>
         {products.length > 0 ? (
           <div className="grid gap-3">
             {products.map((product) => (
@@ -137,18 +137,17 @@ export default function GetProductsTest() {
                     <span className="mx-2 text-gray-500">|</span>
                     <span className="font-semibold text-green-400">${product.price}</span>
                     <span className="mx-2 text-gray-500">|</span>
-                    <span className="font-semibold text-purple-300">Qty: {product.quantity}</span>
+                    <span className="font-semibold text-purple-300">Cant: {product.quantity}</span>
                   </div>
                   <div className="text-xs text-gray-400">
-                    Raw data: {JSON.stringify(product)}
+                    Datos crudos: {JSON.stringify(product)}
                   </div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          
-          <p className="text-gray-500 italic text-center py-4">No products to display</p>
+          <p className="text-gray-500 italic text-center py-4">No hay productos para mostrar</p>
         )}
       </div>
     </div>
