@@ -275,6 +275,7 @@ function BillingSection({ handleProductDeleted }) {
 
 export default function App() {
   const [products, setProducts] = useState([]);
+  
   const [cart, setCart] = useState([]);
 
   const fetchProducts = async () => {
