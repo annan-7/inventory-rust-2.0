@@ -98,6 +98,7 @@ export default function ProductList({ onAddToCart }) {
                     className="px-2 py-1 bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded transition-colors shadow-sm border border-blue-400 text-xs"
                   >
                     Añadir al Carrito
+                    
                   </button>
                 )}
               </div>
