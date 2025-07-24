@@ -48,6 +48,7 @@ export default function AddProduct({ onProductAdded }) {
       setError(`Error al agregar el producto: ${err}`);
     } finally {
       setLoading(false);
+      
     }
   };
 
