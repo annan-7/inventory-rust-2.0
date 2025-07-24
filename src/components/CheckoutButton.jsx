@@ -19,6 +19,7 @@ export default function CheckoutButton({ cart, clearCart }) {
   return (
     <button onClick={handleCheckout} style={{ marginTop: "10px" }}>
       ✅ Checkout
+      
     </button>
   );
 }
