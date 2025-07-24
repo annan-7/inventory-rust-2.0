@@ -141,6 +141,7 @@ export default function GetProductsTest() {
                   </div>
                   <div className="text-xs text-gray-400">
                     Datos crudos: {JSON.stringify(product)}
+                    
                   </div>
                 </div>
               </div>
