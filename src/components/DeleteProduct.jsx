@@ -13,6 +13,7 @@ export default function DeleteProduct({ onProductDeleted }) {
     e.preventDefault();
     
     if (!productId.trim()) {
+      
       setMessage('Por favor, ingrese un ID de producto');
       return;
     }
