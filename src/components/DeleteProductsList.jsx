@@ -64,6 +64,7 @@ export default function DeletedProductsList() {
               <span className="text-gray-300">Página {page} de {totalPages}</span>
               <button onClick={() => setPage(page + 1)} disabled={page === totalPages} className="px-3 py-1 rounded bg-gray-700 text-white disabled:opacity-50">Siguiente</button>
             </div>
+            
           )}
         </>
       )}
