@@ -40,6 +40,7 @@ export default function UpdateProduct({ product, onProductUpdated, onCancel }) {
       <h3 className="text-lg font-bold mb-3 text-blue-700 flex items-center gap-2">
         
         Update Product
+        
       </h3>
       <form onSubmit={handleSubmit} className="space-y-3">
         <div>
