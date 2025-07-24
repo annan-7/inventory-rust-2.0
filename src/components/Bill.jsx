@@ -135,6 +135,7 @@ export default function Bill({ itemList, setItemList, shopName = "Example Shop",
         </table>
       </div>
       {/* Summary */}
+      
       <div className="border-t-2 border-gray-700 pt-6 flex flex-col items-end gap-2">
         <div className="text-white">Subtotal: <span className="font-bold">${subtotal.toFixed(2)}</span></div>
         <div className="text-white">Tax (19%): <span className="font-bold">${tax.toFixed(2)}</span></div>
