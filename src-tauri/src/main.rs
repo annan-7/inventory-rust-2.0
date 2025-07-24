@@ -16,6 +16,7 @@ fn main() {
     tauri::Builder::default()
         .invoke_handler(generate_handler![
             // Product APIs
+            
             api::product::add_product,
             api::product::get_products,
             api::product::update_product,
