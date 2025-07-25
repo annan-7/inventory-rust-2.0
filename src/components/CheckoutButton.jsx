@@ -8,6 +8,7 @@ export default function CheckoutButton({ cart, clearCart }) {
     }
 
     try {
+      
       await invoke("create_bill", { items: cart });
       alert("Bill saved!");
       clearCart();
