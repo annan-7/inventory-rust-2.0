@@ -57,6 +57,7 @@ export default function AddProduct({ onProductAdded }) {
       <h2 className="text-xl font-bold mb-4">Agregar Nuevo Producto</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
+          
           <label htmlFor="productName" className="font-semibold">Nombre del Producto:</label>
           <input
             type="text"
