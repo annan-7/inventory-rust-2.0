@@ -42,6 +42,7 @@ export default function DeletedProductsList() {
                   <th className="px-4 py-2 text-left bg-gray-900 text-gray-200">Precio</th>
                   <th className="px-4 py-2 text-left bg-gray-900 text-gray-200">Fecha de Eliminación</th>
                 </tr>
+                
               </thead>
               <tbody>
                 {paginated.length === 0 ? (
