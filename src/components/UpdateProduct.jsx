@@ -49,6 +49,7 @@ export default function UpdateProduct({ product, onProductUpdated, onCancel }) {
             type="text"
             id="updateProductName"
             value={name}
+            
             onChange={(e) => setName(e.target.value)}
             disabled={loading}
             required
