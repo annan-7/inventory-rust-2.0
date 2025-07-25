@@ -2,6 +2,7 @@ use rusqlite::{Connection, Result};
 
 pub fn init_db() -> Result<()> {
     
+    
     let conn = Connection::open("inventory.db")?;
 
     conn.execute_batch(
