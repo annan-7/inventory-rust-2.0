@@ -8,6 +8,7 @@ export default function DeleteProduct({ onProductDeleted }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [deleteMode, setDeleteMode] = useState('full'); // 'full' or 'quantity'
+  
 
   const handleDelete = async (e) => {
     e.preventDefault();
