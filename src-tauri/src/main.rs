@@ -15,6 +15,7 @@ fn main() {
 
     tauri::Builder::default()
         .invoke_handler(generate_handler![
+
             // Product APIs
             
             api::product::add_product,
@@ -28,6 +29,7 @@ fn main() {
             // Billing APIs
             api::bill::create_bill,
             api::bill::get_bills,
+            
         ])
         .run(tauri::generate_context!())
         .expect("Error while running Tauri app");
