@@ -134,6 +134,7 @@ export default function Bill({ itemList, setItemList, shopName = "Example Shop",
           </tbody>
         </table>
       </div>
+      
       {/* Summary */}
       
       <div className="border-t-2 border-gray-700 pt-6 flex flex-col items-end gap-2">
