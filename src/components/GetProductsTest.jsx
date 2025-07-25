@@ -140,6 +140,7 @@ export default function GetProductsTest() {
                     <span className="font-semibold text-purple-300">Cant: {product.quantity}</span>
                   </div>
                   <div className="text-xs text-gray-400">
+                    
                     Datos crudos: {JSON.stringify(product)}
                     
                   </div>
