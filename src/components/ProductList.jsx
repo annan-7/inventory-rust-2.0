@@ -105,6 +105,8 @@ export default function ProductList({ onAddToCart }) {
             </li>
           ))}
         </ul>
+
+        
         {totalPages > 1 && (
           <div className="mt-4 flex gap-4 justify-center items-center">
             <button onClick={() => setPage(page - 1)} disabled={page === 1} className="px-3 py-1 rounded bg-gray-700 text-white disabled:opacity-50">Anterior</button>
