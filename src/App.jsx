@@ -250,6 +250,7 @@ function BillingSection({ handleProductDeleted }) {
               marginBottom: 16,
               border: '2px solid #20c997',
               animation: 'pulse 2s infinite'
+              
             }}>
               <div style={{ color: 'white', fontWeight: 'bold' }}>✅ Product Found!</div>
               <div style={{ color: 'white' }}><strong>Product:</strong> {item.name}</div>
