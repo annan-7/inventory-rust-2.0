@@ -34,6 +34,7 @@ pub fn get_product_by_id_and_name(id: i32, name: String) -> Result<Option<Produc
     Product::get_by_id_and_name(&conn, id, &name).map_err(|e| e.to_string())
 }
 
+
 #[tauri::command]
 pub fn get_deleted_products() -> Result<Vec<DeletedProduct>, String> {
     let conn = Connection::open("inventory.db").map_err(|e| e.to_string())?;
