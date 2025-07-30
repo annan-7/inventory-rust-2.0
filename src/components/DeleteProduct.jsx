@@ -40,6 +40,8 @@ export default function DeleteProduct({ onProductDeleted }) {
       setQuantity('');
       
       // Notify parent component to refresh the product list
+
+      
       if (onProductDeleted) {
         onProductDeleted();
       }
