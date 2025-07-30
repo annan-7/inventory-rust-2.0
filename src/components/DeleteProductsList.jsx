@@ -44,6 +44,8 @@ export default function DeletedProductsList() {
                 </tr>
                 
               </thead>
+
+              
               <tbody>
                 {paginated.length === 0 ? (
                   <tr><td colSpan="3" className="text-center text-gray-400 py-4">No se encontraron productos eliminados.</td></tr>
