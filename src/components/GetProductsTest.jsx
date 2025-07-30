@@ -101,7 +101,7 @@ export default function GetProductsTest() {
           </div>
         )}
       </div>
-      {/* Test Results */}
+      {/* Test Results */   }
       <div className="mb-6">
         <h3 className="text-lg font-semibold mb-3 text-gray-200">Resultados de la Prueba</h3>
         <div className="space-y-2 max-h-60 overflow-y-auto">
