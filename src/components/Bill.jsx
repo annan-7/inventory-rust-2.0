@@ -142,7 +142,7 @@ export default function Bill({ itemList, setItemList, shopName = "Example Shop",
         <div className="text-white">Tax (19%): <span className="font-bold">${tax.toFixed(2)}</span></div>
         <div className="text-white text-lg font-bold">Total: ${total.toFixed(2)}</div>
       </div>
-      {/* Print Styles */}
+      {/* Print Styles */    }
       <style jsx>{`
         @media print {
           body * {
