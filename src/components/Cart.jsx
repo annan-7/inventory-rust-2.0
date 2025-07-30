@@ -3,6 +3,8 @@ export default function Cart({ cart, setCart }) {
     setCart(cart.map(item =>
       item.product_name === productName
         ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+
+        
         : item
     ));
   };
