@@ -48,6 +48,7 @@ export default function UpdateProduct({ product, onProductUpdated, onCancel }) {
           <input
             type="text"
             id="updateProductName"
+            
             value={name}
             
             onChange={(e) => setName(e.target.value)}
