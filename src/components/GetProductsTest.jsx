@@ -115,6 +115,7 @@ export default function GetProductsTest() {
                   <div className="flex-1">
                     <p className="text-sm font-medium">{result.message}</p>
                     <p className="text-xs text-gray-400 mt-1">{result.timestamp}</p>
+                    
                   </div>
                 </div>
               </div>
