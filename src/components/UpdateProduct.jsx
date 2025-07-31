@@ -38,6 +38,8 @@ export default function UpdateProduct({ product, onProductUpdated, onCancel }) {
   return (
     <div className="mb-4 p-4 bg-white rounded-lg shadow border border-blue-100">
       <h3 className="text-lg font-bold mb-3 text-blue-700 flex items-center gap-2">
+
+        
         
         Update Product
         
