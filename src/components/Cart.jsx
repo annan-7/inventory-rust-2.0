@@ -11,7 +11,7 @@ export default function Cart({ cart, setCart }) {
 
   const total = cart.reduce(
     
-    (sum, item) => sum + item.quantity * item.price_per_item, 0);
+    (sum, item)    => sum + item.quantity * item.price_per_item, 0);
 
   return (
     <div>
