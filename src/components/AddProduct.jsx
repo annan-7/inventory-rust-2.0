@@ -87,6 +87,8 @@ export default function AddProduct({ onProductAdded }) {
             required
             className="bg-gray-800 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+
+          
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="productQuantity" className="font-semibold">Cantidad:</label>
