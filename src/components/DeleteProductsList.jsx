@@ -54,7 +54,7 @@ export default function DeletedProductsList() {
                     <tr key={prod.id + '-' + prod.deleted_at} className="border-b border-gray-700">
                       <td className="px-4 py-2">{prod.name}</td>
                       <td className="px-4 py-2 text-green-400 font-semibold">${prod.price.toFixed(2)}</td>
-                      <td className="px-4 py-2 text-gray-400">{prod.deleted_at}</td>
+                      <td className="px-4 py-2 text-gray-400">{prod.deleted_at}  </td>
                     </tr>
                   ))
                 )}
