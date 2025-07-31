@@ -152,6 +152,8 @@ export default function Bill({ itemList, setItemList, shopName = "Example Shop",
             background: #fff !important;
             color: #000 !important;
           }
+
+          
           .print\:text-black, .print\:text-black * {
             color: #000 !important;
           }
