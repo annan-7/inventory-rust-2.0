@@ -46,7 +46,7 @@ export default function DeleteProduct({ onProductDeleted }) {
         onProductDeleted();
       }
     } catch (error) {
-      setMessage(`Error al eliminar el producto: ${error}`);
+      setMessage(`Error al eliminar el producto : ${error}`);
     } finally {
       setLoading(false);
     }
@@ -55,6 +55,8 @@ export default function DeleteProduct({ onProductDeleted }) {
   return (
     <div className="bg-gray-900 text-white p-6 rounded-lg border border-gray-700 shadow">
       <h3 className="text-xl font-bold mb-4">Eliminar Producto</h3>
+
+      
       {/* Delete Mode Selection */}
       <div className="mb-4">
         <label className="block mb-2 font-semibold">Modo de Eliminación:</label>
