@@ -58,6 +58,8 @@ export default function DeleteProduct({ onProductDeleted }) {
 
       
       {/* Delete Mode Selection */}
+
+      
       <div className="mb-4">
         <label className="block mb-2 font-semibold">Modo de Eliminación:</label>
         <div className="flex gap-6">
