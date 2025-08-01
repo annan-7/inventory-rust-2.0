@@ -75,6 +75,7 @@ export default function AddProduct({ onProductAdded }) {
         
         <div className="flex flex-col gap-1">
           <label htmlFor="productPrice" className="font-semibold">Precio ($):</label>
+          
           <input
             type="number"
             id="productPrice"
