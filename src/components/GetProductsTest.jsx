@@ -112,6 +112,8 @@ export default function GetProductsTest() {
               <div key={index} className={`p-3 rounded-lg border ${getResultColor(result.type)}`}>
                 <div className="flex items-start gap-2">
                   <span className="text-sm">{getResultIcon(result.type)}</span>
+
+                  
                   <div className="flex-1">
                     <p className="text-sm font-medium">{result.message}</p>
                     <p className="text-xs text-gray-400 mt-1">{result.timestamp}</p>
