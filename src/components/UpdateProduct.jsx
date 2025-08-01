@@ -25,6 +25,7 @@ export default function UpdateProduct({ product, onProductUpdated, onCancel }) {
       setSuccess('');
       await invoke('update_product', { id: product.id, name: name.trim(), price: priceValue });
       setSuccess('Product updated successfully!');
+      
       if (onProductUpdated) {
         onProductUpdated();
       }
