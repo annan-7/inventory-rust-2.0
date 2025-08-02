@@ -275,6 +275,9 @@ function BillingSection({ handleProductDeleted }) {
   );
 }
 
+
+
+
 export default function App() {
   const [products, setProducts] = useState([]);
   
