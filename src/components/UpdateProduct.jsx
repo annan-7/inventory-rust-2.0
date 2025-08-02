@@ -27,6 +27,7 @@ export default function UpdateProduct({ product, onProductUpdated, onCancel }) {
       setSuccess('Product updated successfully!');
       
       if (onProductUpdated) {
+        
         onProductUpdated();
       }
     } catch (err) {
