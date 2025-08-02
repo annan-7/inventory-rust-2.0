@@ -58,6 +58,7 @@ export default function Bill({ itemList, setItemList, shopName = "Example Shop",
         <p className="text-gray-300 mb-0">Sales Invoice</p>
         <p className="text-gray-400 text-sm mt-1">Date: {new Date().toLocaleDateString()}</p>
       </div>
+      
       {/* Items Table */}
       <div className="mb-8 overflow-x-auto">
         <table className="w-full bg-gray-800 rounded-lg border border-gray-700">
