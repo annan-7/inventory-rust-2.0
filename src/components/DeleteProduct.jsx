@@ -63,6 +63,7 @@ export default function DeleteProduct({ onProductDeleted }) {
       <div className="mb-4">
         <label className="block mb-2 font-semibold">Modo de Eliminación:</label>
         <div className="flex gap-6">
+          
           <label className="flex items-center gap-2">
             <input
               type="radio"
