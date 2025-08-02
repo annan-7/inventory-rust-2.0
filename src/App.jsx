@@ -261,6 +261,7 @@ function BillingSection({ handleProductDeleted }) {
         </div>
 
         {/* Bill Display */      }
+        
         <div className={`transition-all duration-300 ${isBillActive ? 'opacity-100 scale-100' : 'opacity-50 scale-95'}`}>
           <Bill 
             itemList={itemList} 
