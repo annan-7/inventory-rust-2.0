@@ -77,6 +77,7 @@ export default function AddProduct({ onProductAdded }) {
           <label htmlFor="productPrice" className="font-semibold">Precio ($):</label>
           
           <input
+          
             type="number"
             id="productPrice"
             value={price}
