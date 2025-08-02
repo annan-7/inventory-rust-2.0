@@ -126,6 +126,7 @@ export default function GetProductsTest() {
         </div>
       </div>
       {/* Products Display */}
+      
       <div>
         <h3 className="text-lg font-semibold mb-3 text-gray-200">Productos Recuperados ({products.length})</h3>
         {products.length > 0 ? (
