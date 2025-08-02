@@ -15,7 +15,7 @@ export default function Cart({ cart, setCart }) {
 
   return (
     <div>
-      <h2>Cart</h2>
+      <h2>Cart  </h2>
       
       {cart.map(item => (
         <div key={item.product_name}>
