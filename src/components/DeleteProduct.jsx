@@ -86,6 +86,8 @@ export default function DeleteProduct({ onProductDeleted }) {
             />
             Eliminar Cantidad Específica
           </label>
+
+          
         </div>
       </div>
       <form onSubmit={handleDelete} className="flex flex-col gap-4">
