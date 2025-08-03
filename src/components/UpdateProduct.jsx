@@ -86,6 +86,8 @@ export default function UpdateProduct({ product, onProductUpdated, onCancel }) {
             type="submit"
             disabled={loading}
             className="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded transition disabled:bg-gray-400 disabled:cursor-not-allowed shadow text-xs"
+
+            
           >
             {loading ? 'Updating...' : 'Update'}
           </button>
