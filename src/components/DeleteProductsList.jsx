@@ -59,6 +59,8 @@ export default function DeletedProductsList() {
                   ))
                 )}
               </tbody>
+
+              
             </table>
           </div>
           {totalPages > 1 && (
