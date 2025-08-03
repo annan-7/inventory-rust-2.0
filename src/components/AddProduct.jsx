@@ -92,6 +92,7 @@ export default function AddProduct({ onProductAdded }) {
 
           
         </div>
+        
         <div className="flex flex-col gap-1">
           <label htmlFor="productQuantity" className="font-semibold">Cantidad:</label>
           <input
