@@ -89,6 +89,8 @@ export default function DeleteProduct({ onProductDeleted }) {
 
           
         </div>
+
+        
       </div>
       <form onSubmit={handleDelete} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
