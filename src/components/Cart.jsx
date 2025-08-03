@@ -21,7 +21,9 @@ export default function Cart({ cart, setCart }) {
         <div key={item.product_name}>
           {item.product_name} x {item.quantity} @ ${item.price_per_item.toFixed(2)}
 
-          
+
+
+
           <button onClick={() => updateQuantity(item.product_name, 1)}>+</button>
           
           <button onClick={() => updateQuantity(item.product_name, -1)}>-</button>
