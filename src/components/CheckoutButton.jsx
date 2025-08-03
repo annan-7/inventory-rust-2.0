@@ -3,6 +3,8 @@ import { invoke } from "@tauri-apps/api/core";
 export default function CheckoutButton({ cart, clearCart }) {
   const handleCheckout = async () => {
     if (cart.length === 0) {
+
+      
       alert("Cart is empty.");
       return;
     }
