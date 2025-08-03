@@ -53,6 +53,9 @@ export default function AddProduct({ onProductAdded }) {
   };
 
   return (
+
+
+    
     <div className="bg-gray-900 text-white p-6 rounded-lg border border-gray-700 shadow">
       <h2 className="text-xl font-bold mb-4">Agregar Nuevo Producto</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
