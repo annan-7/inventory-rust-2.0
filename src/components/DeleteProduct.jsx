@@ -92,6 +92,8 @@ export default function DeleteProduct({ onProductDeleted }) {
 
         
       </div>
+
+      
       <form onSubmit={handleDelete} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <label htmlFor="productId" className="font-semibold">ID del Producto:</label>
