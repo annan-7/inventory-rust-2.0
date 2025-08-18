@@ -113,6 +113,8 @@ export default function ProductList({ onAddToCart }) {
           
           <div className="mt-4 flex gap-4 justify-center items-center">
             <button onClick={() => setPage(page - 1)} disabled={page === 1} className="px-3 py-1 rounded bg-gray-700 text-white disabled:opacity-50">Anterior</button>
+
+            
             <span className="text-gray-300">Página {page} de {totalPages}</span>
             
             <button onClick={() => setPage(page + 1)} disabled={page === totalPages} className="px-3 py-1 rounded bg-gray-700 text-white disabled:opacity-50">Siguiente</button>
