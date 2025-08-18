@@ -63,6 +63,8 @@ export default function AddProduct({ onProductAdded }) {
           
           <label htmlFor="productName" className="font-semibold">Nombre del Producto:</label>
           <input
+
+          
             type="text"
             id="productName"
             value={name}
