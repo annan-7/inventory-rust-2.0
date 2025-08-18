@@ -20,6 +20,8 @@ export default function CheckoutButton({ cart, clearCart }) {
       clearCart();
 
       
+
+      
     } catch (err) {
       alert("Error  : " + err);
     }
