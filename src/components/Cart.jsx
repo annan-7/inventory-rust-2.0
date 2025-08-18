@@ -28,6 +28,8 @@ export default function Cart({ cart, setCart }) {
           
           <button onClick={() => updateQuantity(item.product_name, -1)}>-</button>
         </div>
+
+        
       ))}
       <h3>Total: ${total.toFixed(2)}</h3>
     </div>
